@@ -2,18 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:flux_mvp/core/colors/const_colors.dart';
+import 'package:flux_mvp/controller/functions/function_colors.dart';
+import 'package:flux_mvp/widgets/home/widget_create_card.dart';
 import 'package:flux_mvp/widgets/main/app_bar_widgets.dart';
-import 'package:flux_mvp/widgets/main/main_widgets.dart';
 
 class ScreenCreateCard extends StatefulWidget {
   const ScreenCreateCard({super.key});
 
   @override
-  State<ScreenCreateCard> createState() => _ScreenCreateCardState();
+  State<ScreenCreateCard> createState() => _ScreenCreateflux_mvptate();
 }
 
-class _ScreenCreateCardState extends State<ScreenCreateCard> {
+class _ScreenCreateflux_mvptate extends State<ScreenCreateCard> {
   TextEditingController nameController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController companyNameController = TextEditingController();
@@ -21,12 +21,14 @@ class _ScreenCreateCardState extends State<ScreenCreateCard> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController companyDetailsController = TextEditingController();
-
+  final cardFormKey = GlobalKey<FormState>();
   Color selectedColor = const Color.fromARGB(255, 48, 38, 10);
   bool isGradientSelected = false;
   Color startColor = Colors.blue;
   Color endColor = Colors.red;
-  String? selectedColorRGB;
+  String selectedColorRGB = '255, 62, 54, 33';
+  String? selectedFirstGradientRGB = '255, 34, 151, 244';
+  String? selectedSecondGradientRGB = '255, 244, 65, 52';
 
   String nameText = 'Name';
   String titleText = 'Title';
@@ -34,10 +36,6 @@ class _ScreenCreateCardState extends State<ScreenCreateCard> {
   String locationText = 'Location';
   String phoneText = 'Phone number';
   String emailText = 'E-mail';
-
-  String getColorRgbValue(Color color) {
-    return "100, ${color.red}, ${color.green}, ${color.blue}";
-  }
 
   void pickColor(BuildContext context) {
     showDialog(
@@ -51,9 +49,9 @@ class _ScreenCreateCardState extends State<ScreenCreateCard> {
               setState(() {
                 selectedColor = color;
                 log(
-                  "Selectod Color: ${getColorRgbValue(color)}",
+                  "Selectod Color: ${FunctionColors.getColorRgbValue(color)}",
                 );
-                selectedColorRGB = getColorRgbValue(color);
+                selectedColorRGB = FunctionColors.getColorRgbValue(color);
               });
             },
             // ignore: deprecated_member_use
@@ -91,9 +89,16 @@ class _ScreenCreateCardState extends State<ScreenCreateCard> {
                   }
                   log(
                     isStartColor
-                        ? "Start Color: ${getColorRgbValue(color)}"
-                        : "End Color: ${getColorRgbValue(color)}",
+                        ? "Start Color: ${FunctionColors.getColorRgbValue(color)}"
+                        : "End Color: ${FunctionColors.getColorRgbValue(color)}",
                   );
+                  if (isStartColor == true) {
+                    selectedFirstGradientRGB =
+                        FunctionColors.getColorRgbValue(color);
+                  } else {
+                    selectedSecondGradientRGB =
+                        FunctionColors.getColorRgbValue(color);
+                  }
                 });
               },
             ),
@@ -127,358 +132,242 @@ class _ScreenCreateCardState extends State<ScreenCreateCard> {
             ),
             Expanded(
                 child: SingleChildScrollView(
-              child: Column(
-                spacing: 10,
-                children: [
-                  isGradientSelected
-                      ? Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              20,
-                            ),
-                            gradient:
-                                LinearGradient(colors: [startColor, endColor]),
-                            border: Border.all(),
-                          ),
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AppTextWidget(
-                                      text: nameText,
-                                      size: 18,
-                                    ),
-                                    AppTextWidget(
-                                      text: titleText,
-                                      size: 12,
-                                    ),
-                                    Row(
-                                      spacing: 5,
-                                      children: [
-                                        Icon(
-                                          Icons.business_center,
-                                          color: kWhite,
-                                        ),
-                                        AppTextWidget(
-                                          text: comapnyNameText,
-                                          size: 18,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      spacing: 5,
-                                      children: [
-                                        Icon(
-                                          Icons.location_on_rounded,
-                                          color: kWhite,
-                                        ),
-                                        AppTextWidget(
-                                          text: locationText,
-                                          size: 18,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      spacing: 5,
-                                      children: [
-                                        Row(
-                                          spacing: 5,
-                                          children: [
-                                            Icon(
-                                              Icons.phone,
-                                              color: kWhite,
-                                              size: 15,
-                                            ),
-                                            AppTextWidget(
-                                              text: phoneText,
-                                              size: 12,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          spacing: 5,
-                                          children: [
-                                            Icon(
-                                              Icons.email,
-                                              color: kWhite,
-                                              size: 15,
-                                            ),
-                                            AppTextWidget(
-                                              text: emailText,
-                                              size: 12,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          // child: Image.asset(
-                          //   'assets/card5.png',
-                          //   height: 200,
-                          //   width: double.infinity,
-                          //   fit: BoxFit.cover,
-                          // ),
-                        )
-                      : Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              20,
-                            ),
-                            color: selectedColor,
-                            border: Border.all(),
-                          ),
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AppTextWidget(
-                                      text: nameText,
-                                      size: 18,
-                                    ),
-                                    AppTextWidget(
-                                      text: titleText,
-                                      size: 12,
-                                    ),
-                                    Row(
-                                      spacing: 5,
-                                      children: [
-                                        Icon(
-                                          Icons.business_center,
-                                          color: kWhite,
-                                        ),
-                                        AppTextWidget(
-                                          text: comapnyNameText,
-                                          size: 18,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      spacing: 5,
-                                      children: [
-                                        Icon(
-                                          Icons.location_on_rounded,
-                                          color: kWhite,
-                                        ),
-                                        AppTextWidget(
-                                          text: locationText,
-                                          size: 18,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      spacing: 5,
-                                      children: [
-                                        Row(
-                                          spacing: 5,
-                                          children: [
-                                            Icon(
-                                              Icons.phone,
-                                              color: kWhite,
-                                              size: 15,
-                                            ),
-                                            AppTextWidget(
-                                              text: phoneText,
-                                              size: 12,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          spacing: 5,
-                                          children: [
-                                            Icon(
-                                              Icons.email,
-                                              color: kWhite,
-                                              size: 15,
-                                            ),
-                                            AppTextWidget(
-                                              text: emailText,
-                                              size: 12,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          // child: Image.asset(
-                          //   'assets/card5.png',
-                          //   height: 200,
-                          //   width: double.infinity,
-                          //   fit: BoxFit.cover,
-                          // ),
-                        ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Radio<bool>(
-                            value: false,
-                            groupValue: isGradientSelected,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isGradientSelected = value!;
-                              });
-                            },
-                          ),
-                          const Text('Color'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio<bool>(
-                            value: true,
-                            groupValue: isGradientSelected,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isGradientSelected = value!;
-                              });
-                            },
-                          ),
-                          const Text('Gradient'),
-                        ],
-                      ),
-                    ],
-                  ),
-                  isGradientSelected
-                      ? Row(
-                          spacing: 10,
-                          mainAxisAlignment: MainAxisAlignment.center,
+              child: Form(
+                key: cardFormKey,
+                child: Column(
+                  spacing: 10,
+                  children: [
+                    isGradientSelected
+                        ? SelectedGradientCardWidget(
+                            startColor: startColor,
+                            endColor: endColor,
+                            nameText: nameText,
+                            titleText: titleText,
+                            comapnyNameText: comapnyNameText,
+                            locationText: locationText,
+                            phoneText: phoneText,
+                            emailText: emailText)
+                        : SelectedColorCardWidget(
+                            selectedColor: selectedColor,
+                            nameText: nameText,
+                            titleText: titleText,
+                            comapnyNameText: comapnyNameText,
+                            locationText: locationText,
+                            phoneText: phoneText,
+                            emailText: emailText),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
                           children: [
-                            ElevatedButton(
-                              onPressed: () => pickGradient(context, true),
-                              child: const Text('First color'),
+                            Radio<bool>(
+                              value: false,
+                              groupValue: isGradientSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isGradientSelected = value!;
+                                });
+                              },
                             ),
-                            ElevatedButton(
-                              onPressed: () => pickGradient(context, false),
-                              child: Column(
-                                children: [
-                                  const Text('Second color'),
-                                ],
-                              ),
-                            ),
+                            const Text('Color'),
                           ],
-                        )
-                      : ElevatedButton(
-                          onPressed: () => pickColor(context),
-                          child: const Text('Select Gradient'),
                         ),
-                  TextFormField(
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      labelText: "Enter your name",
-                      border: OutlineInputBorder(),
+                        Row(
+                          children: [
+                            Radio<bool>(
+                              value: true,
+                              groupValue: isGradientSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isGradientSelected = value!;
+                                });
+                              },
+                            ),
+                            const Text('Gradient'),
+                          ],
+                        ),
+                      ],
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        nameText = value;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    controller: titleController,
-                    decoration: const InputDecoration(
-                      labelText: "Title",
-                      border: OutlineInputBorder(),
+                    isGradientSelected
+                        ? Row(
+                            spacing: 10,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () => pickGradient(context, true),
+                                child: const Text('First color'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () => pickGradient(context, false),
+                                child: Column(
+                                  children: [
+                                    const Text('Second color'),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        : ElevatedButton(
+                            onPressed: () => pickColor(context),
+                            child: const Text('Select color'),
+                          ),
+                    TextFormField(
+                      controller: nameController,
+                      decoration: const InputDecoration(
+                        labelText: "Enter your name",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          nameText = value;
+                        });
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Name is required*';
+                        }
+                        if (value.length < 2) {
+                          return 'Please enter Name';
+                        }
+                        return null;
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        titleText = value;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    controller: companyNameController,
-                    decoration: const InputDecoration(
-                      labelText: "Company name",
-                      border: OutlineInputBorder(),
+                    TextFormField(
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                        labelText: "Title",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          titleText = value;
+                        });
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Title is required*';
+                        }
+                        if (value.length < 2) {
+                          return 'Please enter Title';
+                        }
+                        return null;
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        comapnyNameText = value;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    controller: locationController,
-                    decoration: const InputDecoration(
-                      labelText: "Location",
-                      border: OutlineInputBorder(),
+                    TextFormField(
+                      controller: companyNameController,
+                      decoration: const InputDecoration(
+                        labelText: "Company name",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          comapnyNameText = value;
+                        });
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Company namr is required*';
+                        }
+                        if (value.length < 2) {
+                          return 'Please enter Comapany name';
+                        }
+                        return null;
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        locationText = value;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    controller: phoneNumberController,
-                    decoration: const InputDecoration(
-                      labelText: "Phone",
-                      border: OutlineInputBorder(),
+                    TextFormField(
+                      controller: locationController,
+                      decoration: const InputDecoration(
+                        labelText: "Location",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          locationText = value;
+                        });
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Location is required*';
+                        }
+                        if (value.length < 2) {
+                          return 'Please enter Location';
+                        }
+                        return null;
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        phoneText = value;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      border: OutlineInputBorder(),
+                    TextFormField(
+                      controller: phoneNumberController,
+                      decoration: const InputDecoration(
+                        labelText: "Phone",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          phoneText = value;
+                        });
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Phone number is required*';
+                        }
+                        if (value.length < 10) {
+                          return 'Please enter a valid phone number';
+                        }
+                        return null;
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        emailText = value;
-                      });
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () => log(selectedColorRGB!),
-                    child: Container(
-                      child: Text('Tap'),
+                    TextFormField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        labelText: "Email",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          emailText = value;
+                        });
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email is required*';
+                        }
+                        if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
                     ),
-                  )
-                ],
+                    TextFormField(
+                      maxLines: 4,
+                      controller: companyDetailsController,
+                      decoration: const InputDecoration(
+                        labelText: "Company Details",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    ContinueWidget(
+                        cardFormKey: cardFormKey,
+                        nameController: nameController,
+                        titleController: titleController,
+                        companyNameController: companyNameController,
+                        locationController: locationController,
+                        phoneNumberController: phoneNumberController,
+                        emailController: emailController,
+                        companyDetailsController: companyDetailsController,
+                        isGradientSelected: isGradientSelected,
+                        selectedColorRGB: selectedColorRGB,
+                        selectedFirstGradientRGB: selectedFirstGradientRGB,
+                        selectedSecondGradientRGB: selectedSecondGradientRGB),
+                    SizedBox(height: 20),
+                  ],
+                ),
               ),
             ))
           ],

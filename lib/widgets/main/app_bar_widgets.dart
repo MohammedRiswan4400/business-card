@@ -13,26 +13,29 @@ class AppBarWidget extends StatelessWidget {
   final double width;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => ScreenRoutes.popNow(context),
-      child: Container(
-        width: width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: kInvertedTextColor,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 10,
-            children: [
-              Icon(Icons.arrow_back_ios_new_rounded, color: kTextColor),
-              AppTextWidget(
-                text: title,
-                size: 16,
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: GestureDetector(
+        onTap: () => ScreenRoutes.popNow(context),
+        child: Container(
+          width: width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: kInvertedTextColor,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 10,
+              children: [
+                Icon(Icons.arrow_back_ios_new_rounded, color: kTextColor),
+                AppTextWidget(
+                  text: title,
+                  size: 16,
+                ),
+              ],
+            ),
           ),
         ),
       ),

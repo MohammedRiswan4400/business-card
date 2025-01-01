@@ -8,18 +8,22 @@ class AppTextWidget extends StatelessWidget {
       this.color,
       this.size,
       this.weight,
-      this.maxLine});
+      this.maxLine,
+      this.align});
   final String text;
   Color? color;
   double? size;
   FontWeight? weight;
   int? maxLine;
+  TextAlign? align;
 
   @override
   Widget build(BuildContext context) {
     return Text(
+      textAlign: align ?? TextAlign.center,
       text,
-      maxLines: maxLine,
+      overflow: TextOverflow.ellipsis,
+      maxLines: maxLine ?? 100,
       style: TextStyle(
         color: color ?? Colors.white,
         fontSize: size ?? 30,
